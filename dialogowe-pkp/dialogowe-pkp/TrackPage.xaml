@@ -4,11 +4,33 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:dialogowe_pkp"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="TrackPage">
+      mc:Ignorable="d"
+      Title="TrackPage" Height="450" Width="800">
 
-    <Grid>
-        
+    <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Wybierz stację początkową oraz końcową"  HorizontalAlignment="Center" VerticalAlignment="Top"  FontSize="32" Foreground="White"></TextBlock>
+
+        <ListView  Grid.Row="1" Background="Orange" HorizontalAlignment="Center" VerticalAlignment="Center"  Name="lvStations" SelectionChanged="StationListSelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <TextBlock Text="{Binding From}" FontWeight="Bold" />
+                        <TextBlock Text=" --> " FontWeight="Bold" />
+                        <TextBlock Text="{Binding To}" FontWeight="Bold" />
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <TextBlock Name="itemNameStationStart" Grid.Row="2" Text="Stacja początkowa to: "   VerticalAlignment="Center"  FontSize="16" Foreground="White"></TextBlock>
+        <TextBlock Name="itemNameStationEnd" Grid.Row="3" Text="Stacja końcowa to: "   VerticalAlignment="Center"  FontSize="16" Foreground="White"></TextBlock>
     </Grid>
+
 </local:SpeechHandler>

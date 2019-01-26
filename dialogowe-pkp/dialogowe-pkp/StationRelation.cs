@@ -14,7 +14,7 @@ namespace dialogowe_pkp
             To = to;
         }
 
-        public String From;
-        public String To;
+        public String From { get; set; }
+        public String To { get; set; }
     }
 }

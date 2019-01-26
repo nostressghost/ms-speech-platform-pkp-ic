@@ -79,6 +79,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Hour.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="PageHandler.cs" />
     <Compile Include="SpeechHandler.cs" />

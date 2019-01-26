@@ -7,10 +7,6 @@
         <tag>help</tag>
       </item>
       <item>
-        <ruleref uri="#order" />
-        <tag>order</tag>
-      </item>
-      <item>
         <ruleref uri="#quit" />
         <tag>quit</tag>
       </item>
@@ -21,38 +17,6 @@
     <item>Pomoc</item>
   </rule>
 
-  <rule id="order">
-    <one-of>
-      <item>
-        <item>
-          <one-of>
-            <item>Chcę</item>
-            <item>Chciałbym</item>
-          </one-of>
-        </item>
-        <item>
-          <one-of>
-            <item>kupić</item>
-            <item>zamówić</item>
-          </one-of>
-        </item>
-        <one-of>
-          <item>bilet</item>
-          <item>bilety</item>
-        </one-of>
-      </item>
-      <item>
-        <one-of>
-          <item>Kup</item>
-          <item>Zamów</item>
-        </one-of>
-        <one-of>
-          <item>bilet</item>
-          <item>bilety</item>
-        </one-of>
-      </item>
-    </one-of>
-  </rule>
   <rule id="quit">
     <one-of>
       <item>Wyjdź</item>

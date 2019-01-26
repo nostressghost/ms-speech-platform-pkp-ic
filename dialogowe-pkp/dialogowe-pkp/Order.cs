@@ -10,6 +10,7 @@ namespace dialogowe_pkp
     {
         public String From;
         public String To;
+        public String Hour;
 
         public Order()
         {
