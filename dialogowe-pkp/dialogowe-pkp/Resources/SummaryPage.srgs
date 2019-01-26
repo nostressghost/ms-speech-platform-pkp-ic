@@ -7,16 +7,16 @@
         <tag>cancel</tag>
       </item>
       <item>
-    	<ruleref uri="#confirm" />
-        <tag>confirm</tag>
+    	<ruleref uri="#last" />
+        <tag>last</tag>
       </item>
     </one-of>
   </rule>
 
-  <rule id="confirm">
+  <rule id="last">
     <one-of>
-      <item>Potwierdzam</item>
-      <item>Zatwierdzam</item>
+      <item>Potwierdzam rezerwację</item>
+      <item>Zatwierdzam rezerwację</item>
       <item>Tak</item>
     </one-of>
   </rule>

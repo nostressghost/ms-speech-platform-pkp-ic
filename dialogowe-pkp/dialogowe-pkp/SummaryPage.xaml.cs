@@ -53,7 +53,7 @@ namespace dialogowe_pkp
                 string command = result.Semantics.Value.ToString().ToLower();
                 switch (command)
                 {
-                    case "confirm":
+                    case "last":
                         SpeakTYP();
                         break;
 
