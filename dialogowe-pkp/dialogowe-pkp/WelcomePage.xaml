@@ -1,0 +1,23 @@
+﻿<local:SpeechHandler x:Class="dialogowe_pkp.WelcomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:dialogowe_pkp"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="WelcomePage">
+
+    <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Foreground="White" Text="Witaj w automacie PKP IC. Co zamierzasz zrobić?"  HorizontalAlignment="Center" VerticalAlignment="Top"  FontSize="32" />
+        <Button Grid.Row="1" Background="orange" VerticalAlignment="Center" Content="Kup bilet" FontSize="32" Click="orderButtonClick"/>
+        <Button Grid.Row="2" Background="orange" VerticalAlignment="Center" Content="Pomoc" FontSize="32" Click="helpButtonClick"/>
+        <Button Grid.Row="3" Background="orange" VerticalAlignment="Center" Content="Wyjdź" FontSize="32" Click="quitButtonClick"/>
+    </Grid>
+</local:SpeechHandler>

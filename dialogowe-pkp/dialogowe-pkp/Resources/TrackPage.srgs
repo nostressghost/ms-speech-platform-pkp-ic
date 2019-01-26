@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<grammar version="1.0" xml:lang="pl-PL" root="root" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0-literals">
+  <rule id="root" scope="public">
+    <one-of>
+      <item>
+        <ruleref uri="#help" />
+        <tag>help</tag>
+      </item>
+      <item>
+        <ruleref uri="#order" />
+        <tag>order</tag>
+      </item>
+      <item>
+        <ruleref uri="#cancel" />
+        <tag>cancel</tag>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="help">
+    <item>Pomoc</item>
+  </rule>
+
+  <rule id="order">
+    <one-of>
+      <item>
+        <item>
+          <one-of>
+            <item>Chcę</item>
+            <item>Chciałbym</item>
+          </one-of>
+        </item>
+        <item>
+            <item>kupić</item>
+        </item>
+        <item>
+          <one-of>
+            <item>bilet</item>
+            <item>bilety</item>
+          </one-of>
+        </item>
+        <item>
+            <item>na pociąg relacji</item>
+        </item>
+        <item>
+          <one-of>
+            <item>Warszawa</item>
+            <item>Lublin</item>
+          </one-of>
+        </item>
+        <item>
+          <one-of>
+            <item>Warszawa</item>
+            <item>Lublin</item>
+          </one-of>
+        </item>
+
+      </item>
+      <item>
+      </item>
+    </one-of>
+  </rule>
+  <rule id="cancel">
+    <one-of>
+      <item>Anuluj</item>
+      <item>Anuluj zamówienie</item>
+      <item>Zamknij</item>
+      <item>Wyjdź</item>
+    </one-of>
+  </rule>
+</grammar>
