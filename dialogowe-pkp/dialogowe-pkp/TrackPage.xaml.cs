@@ -20,7 +20,6 @@ namespace dialogowe_pkp
 {
     public partial class TrackPage : SpeechHandler
     {
-
         private List<StationRelation> stationRelation;
         private List<String> endStation;
         private List<String> startStation;

@@ -11,6 +11,7 @@ namespace dialogowe_pkp
         public String From;
         public String To;
         public String Hour;
+        public int Quantity;
 
         public Order()
         {

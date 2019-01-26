@@ -73,9 +73,23 @@ namespace dialogowe_pkp
                         case "hours":
                             hourChoosed(hours[int.Parse(command.Skip(1).First())]);
                             break;
+                        case "quit":
+                            CloseWindow();
+                            break;
                     }
                 });
             }
+        }
+
+        private void SpeakQuit()
+        {
+            Speak("Zapraszam ponownie.");
+        }
+
+        private void CloseWindow()
+        {
+            SpeakQuit();
+            DispatchAsync(System.Windows.Application.Current.Shutdown);
         }
 
         private void SpeakHelp()
@@ -161,7 +175,7 @@ namespace dialogowe_pkp
         {
             Order.Hour = hour.Value;
             Speak("Wybrałeś bilet na" + hour.Value);
-            //ChangePage(new TicketPage(window, order)); 
+            ChangePage(new TicketPage(window, Order)); 
         }
     }
 }

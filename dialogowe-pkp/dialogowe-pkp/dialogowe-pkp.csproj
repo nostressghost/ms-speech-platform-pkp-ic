@@ -82,10 +82,14 @@
     <Compile Include="Hour.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="PageHandler.cs" />
+    <Compile Include="SeatsQuantity.cs" />
     <Compile Include="SpeechHandler.cs" />
     <Compile Include="StationRelation.cs" />
     <Compile Include="HoursPage.xaml.cs">
       <DependentUpon>HoursPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TicketPage.xaml.cs">
+      <DependentUpon>TicketPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TrackPage.xaml.cs">
       <DependentUpon>TrackPage.xaml</DependentUpon>
@@ -108,6 +112,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="HoursPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TicketPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

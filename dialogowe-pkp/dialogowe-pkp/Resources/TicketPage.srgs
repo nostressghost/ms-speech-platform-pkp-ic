@@ -7,8 +7,8 @@
         <tag>help</tag>
       </item>
       <item>
-        <ruleref uri="#cancel" />
-        <tag>cancel</tag>
+        <ruleref uri="#quit" />
+        <tag>quit</tag>
       </item>
     </one-of>
   </rule>
@@ -17,12 +17,11 @@
     <item>Pomoc</item>
   </rule>
 
-  <rule id="cancel">
+  <rule id="quit">
     <one-of>
-      <item>Anuluj</item>
-      <item>Anuluj zamówienie</item>
-      <item>Zamknij</item>
       <item>Wyjdź</item>
+      <item>Zakończ</item>
+      <item>Zamknij</item>
     </one-of>
   </rule>
 </grammar>
