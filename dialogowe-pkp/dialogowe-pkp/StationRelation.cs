@@ -8,13 +8,19 @@ namespace dialogowe_pkp
 {
     class StationRelation
     {
-        public StationRelation(String from, String to)
+        public StationRelation(String fromA, String fromB, String toA, String toB)
         {
-            From = from;
-            To = to;
+            FromA = fromA;
+            FromB = fromB;
+            ToA = toA;
+            ToB = toB;
         }
 
-        public String From { get; set; }
-        public String To { get; set; }
+        public String FromA { get; set; }
+        public String ToA { get; set; }
+
+        public String FromB { get; set; }
+        public String ToB { get; set; }
+
     }
 }

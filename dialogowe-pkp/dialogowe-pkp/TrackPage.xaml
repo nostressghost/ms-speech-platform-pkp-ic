@@ -21,9 +21,9 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
-                        <TextBlock Text="{Binding From}" FontWeight="Bold" />
+                        <TextBlock Text="{Binding FromA}" FontWeight="Bold" />
                         <TextBlock Text=" --> " FontWeight="Bold" />
-                        <TextBlock Text="{Binding To}" FontWeight="Bold" />
+                        <TextBlock Text="{Binding ToA}" FontWeight="Bold" />
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

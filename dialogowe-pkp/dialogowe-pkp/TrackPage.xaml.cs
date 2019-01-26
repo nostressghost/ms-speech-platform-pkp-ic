@@ -30,15 +30,15 @@ namespace dialogowe_pkp
             InitializeComponent();
 
             stationRelation = new List<StationRelation>();
-            stationRelation.Add(new StationRelation("Warszawa", "Lublin"));
-            stationRelation.Add(new StationRelation("Katowice", "Lublin"));
-            stationRelation.Add(new StationRelation("Warszawa", "Katowice"));
-            stationRelation.Add(new StationRelation("Gdynia", "Lublin"));
-            stationRelation.Add(new StationRelation("Lublin", "Sopot"));
+            stationRelation.Add(new StationRelation("Warszawa", "Warszawy", "Lublin", "Lublina"));
+            stationRelation.Add(new StationRelation("Katowice", "Katowic", "Lublin", "Lublina"));
+            stationRelation.Add(new StationRelation("Warszawa", "Warszawy", "Katowice", "Katowic"));
+            stationRelation.Add(new StationRelation("Gdynia", "Gdyni", "Lublin", "Lublina"));
+            stationRelation.Add(new StationRelation("Lublin", "Lublina", "Sopot", "Sopotu"));
 
             lvStations.ItemsSource = stationRelation;
 
-            startStation = new List<String>();
+            /*startStation = new List<String>();
             startStation.Add("Warszawa");
             startStation.Add("Katowice");
             startStation.Add("Gdynia");
@@ -47,7 +47,7 @@ namespace dialogowe_pkp
             endStation = new List<String>();
             endStation.Add("Lublina");
             endStation.Add("Katowic");
-            endStation.Add("Sopotu");
+            endStation.Add("Sopotu");*/
         }
 
         public override void InitializeSpeech(object sender, DoWorkEventArgs e)
@@ -86,6 +86,13 @@ namespace dialogowe_pkp
                     {
                         case "help":
                             SpeakHelp();
+                            break;
+
+                        case "completeextendedorders":
+                            TrackChoosed(stationRelation[int.Parse(command.Skip(1).First())]);
+                                                        itemNameStationStart.Text = "Stacja początkowa to: " + order.From;
+                            itemNameStationEnd.Text = "Stacja końcowa to: " + order.To;
+                            SpeakConfirmation();
                             break;
                         case "completeorders":
                             TrackChoosed(stationRelation[int.Parse(command.Skip(1).First())]);
@@ -136,18 +143,19 @@ namespace dialogowe_pkp
 
         private void TrackChoosed(StationRelation stationRelation)
         {
-            order = new Order(stationRelation.From, stationRelation.To);
+            order = new Order(stationRelation.FromA, stationRelation.ToA);
         }
 
         protected override void AddCustomSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
             AddCompleteOrderSpeechGrammarRules(srgsRules);
-            AddInCompleteOrderSpeechGrammarRules(srgsRules);
-            AddStartStationSpeechGrammarRules(srgsRules);
+            //AddInCompleteOrderSpeechGrammarRules(srgsRules);
+            AddCompleteExtendedOrderSpeechGrammarRules(srgsRules);
+            //AddStartStationSpeechGrammarRules(srgsRules);
             AddConfirmationSpeechGrammarRules(srgsRules);
         }
 
-        private void AddStartStationSpeechGrammarRules(SrgsRulesCollection srgsRules)
+        /*private void AddStartStationSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
             SrgsRule movieSrgsRule;
 
@@ -184,7 +192,61 @@ namespace dialogowe_pkp
                 SrgsOneOf srgsOneOf = (SrgsOneOf)rootSrgsRule.Elements.Where(element => element is SrgsOneOf).First();
                 srgsOneOf.Add(srgsItem);
             }
+        }*/
+
+        private void AddCompleteExtendedOrderSpeechGrammarRules(SrgsRulesCollection srgsRules)
+        {
+            SrgsRule movieSrgsRule;
+
+            {
+                SrgsOneOf startStationSrgsOneOf = new SrgsOneOf();
+
+                int i = 0;
+                foreach (StationRelation relation in stationRelation)
+                {
+                    SrgsItem srgsItem = new SrgsItem("z " + relation.FromB + " do " + relation.ToB);
+                    srgsItem.Add(new SrgsSemanticInterpretationTag("out=\"completeextendedorders." + i++ + "\";"));
+
+                    startStationSrgsOneOf.Add(srgsItem);
+                }
+
+                SrgsItem pleaseSrgsItem = new SrgsItem();
+                SrgsOneOf pleaseSrgsOneOf = new SrgsOneOf();
+                pleaseSrgsOneOf.Add(new SrgsItem("Chcę kupić"));
+                pleaseSrgsOneOf.Add(new SrgsItem("Chciałbym kupić"));
+                pleaseSrgsItem.Add(pleaseSrgsOneOf);
+
+                SrgsItem phraseSrgsItem = new SrgsItem();
+                phraseSrgsItem.Add(pleaseSrgsItem);
+
+                SrgsItem ticketSrgsItem = new SrgsItem();
+                SrgsOneOf ticketSrgsOneOf = new SrgsOneOf();
+                ticketSrgsOneOf.Add(new SrgsItem("bilet"));
+                ticketSrgsOneOf.Add(new SrgsItem("bilety"));
+                ticketSrgsItem.Add(ticketSrgsOneOf);
+                ticketSrgsItem.Add(new SrgsItem(0, 1, "Na pociąg"));
+
+
+                SrgsItem phraseSrgsItem2 = new SrgsItem();
+                phraseSrgsItem2.Add(ticketSrgsItem);
+
+                phraseSrgsItem2.Add(startStationSrgsOneOf);
+
+                movieSrgsRule = new SrgsRule("completeextendedorder", phraseSrgsItem, phraseSrgsItem2);
+            }
+
+            srgsRules.Add(movieSrgsRule);
+
+            {
+                SrgsItem srgsItem = new SrgsItem();
+                srgsItem.Add(new SrgsRuleRef(movieSrgsRule));
+
+                SrgsRule rootSrgsRule = srgsRules.Where(rule => rule.Id == "root").First();
+                SrgsOneOf srgsOneOf = (SrgsOneOf)rootSrgsRule.Elements.Where(element => element is SrgsOneOf).First();
+                srgsOneOf.Add(srgsItem);
+            }
         }
+
 
         private void AddCompleteOrderSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
@@ -196,7 +258,7 @@ namespace dialogowe_pkp
                 int i = 0;
                 foreach (StationRelation relation in stationRelation)
                 {
-                    SrgsItem srgsItem = new SrgsItem(relation.From + " " + relation.To);
+                    SrgsItem srgsItem = new SrgsItem(relation.FromA + " " + relation.ToA);
                     srgsItem.Add(new SrgsSemanticInterpretationTag("out=\"completeorders." + i++ + "\";"));
 
                     startStationSrgsOneOf.Add(srgsItem);
@@ -237,7 +299,7 @@ namespace dialogowe_pkp
             }
         }
 
-        private void AddInCompleteOrderSpeechGrammarRules(SrgsRulesCollection srgsRules)
+        /*private void AddInCompleteOrderSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
             SrgsRule movieSrgsRule;
 
@@ -289,7 +351,7 @@ namespace dialogowe_pkp
                 SrgsOneOf srgsOneOf = (SrgsOneOf)rootSrgsRule.Elements.Where(element => element is SrgsOneOf).First();
                 srgsOneOf.Add(srgsItem);
             }
-        }
+        }*/
 
         private void AddConfirmationSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
