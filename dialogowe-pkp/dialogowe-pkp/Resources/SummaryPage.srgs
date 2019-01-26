@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<grammar version="1.0" xml:lang="pl-PL" root="root" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0-literals">
+  <rule id="root" scope="public">
+    <one-of>
+      <item>
+        <ruleref uri="#cancel" />
+        <tag>cancel</tag>
+      </item>
+      <item>
+    	<ruleref uri="#confirm" />
+        <tag>confirm</tag>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="confirm">
+    <one-of>
+      <item>Potwierdzam</item>
+      <item>Zatwierdzam</item>
+      <item>Tak</item>
+    </one-of>
+  </rule>
+
+  <rule id="cancel">
+    <one-of>
+      <item>Anuluj</item>
+      <item>Zakończ</item>
+    </one-of>
+  </rule>
+</grammar>

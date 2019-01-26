@@ -10,7 +10,7 @@
 
     <Grid Background="Black">
 
-        <TextBlock Text="Podaj liczbę biletów"  HorizontalAlignment="Center" VerticalAlignment="Top"  FontSize="32" Foreground="White"></TextBlock>
+        <TextBlock Text="Podaj godzinę odjazdu"  HorizontalAlignment="Center" VerticalAlignment="Top"  FontSize="32" Foreground="White"></TextBlock>
 
         <ListBox Name="lbHourList" HorizontalContentAlignment="Stretch" Margin="40" SelectionChanged="HourListSelectionChanged">
             <ListBox.ItemTemplate>

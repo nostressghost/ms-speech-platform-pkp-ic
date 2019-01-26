@@ -93,7 +93,7 @@ namespace dialogowe_pkp
 
         private void SpeakHelp()
         {
-            Speak("Aby wybrać liczbę miejsc powiedz na przykład CHCĘ JEDEN BILET. Aby anulować zamówienie powiedz wyjdź.");
+            Speak("Aby wybrać liczbę miejsc powiedz na przykład CHCĘ JEDEN BILET. Aby anulować zamówienie powiedz WYJDŹ.");
         }
 
         protected override void AddCustomSpeechGrammarRules(SrgsRulesCollection srgsRules)
@@ -157,7 +157,6 @@ namespace dialogowe_pkp
         private void seatsChoosed(SeatsQuantity seatsQuantity)
         {
             Order.Quantity = seatsQuantity.Quantity;
-            Speak("Dziękuję");
             //DispatchAsync(System.Windows.Application.Current.Shutdown);
         }
 
@@ -166,7 +165,7 @@ namespace dialogowe_pkp
             if (lbSeatsList.SelectedItem != null)
             {
                 seatsChoosed(lbSeatsList.SelectedItem as SeatsQuantity);
-                //ChangePage(new HoursPage(this.window, this.order));
+                ChangePage(new SummaryPage(this.window, Order));
             }
         }
 

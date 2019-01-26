@@ -29,8 +29,8 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <TextBlock Name="itemNameStationStart" Grid.Row="2" Text="Stacja początkowa to: "   VerticalAlignment="Center"  FontSize="16" Foreground="White"></TextBlock>
-        <TextBlock Name="itemNameStationEnd" Grid.Row="3" Text="Stacja końcowa to: "   VerticalAlignment="Center"  FontSize="16" Foreground="White"></TextBlock>
+        <TextBlock Name="itemNameStationStart" Grid.Row="2" Text="Stacja początkowa to: " VerticalAlignment="Center"  FontSize="16" Foreground="White"></TextBlock>
+        <TextBlock Name="itemNameStationEnd" Grid.Row="3" Text="Stacja końcowa to: " VerticalAlignment="Center"  FontSize="16" Foreground="White"></TextBlock>
     </Grid>
 
 </local:SpeechHandler>
