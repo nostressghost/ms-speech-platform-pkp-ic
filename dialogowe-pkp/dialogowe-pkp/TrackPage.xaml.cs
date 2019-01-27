@@ -21,33 +21,33 @@ namespace dialogowe_pkp
     public partial class TrackPage : SpeechHandler
     {
         private List<StationRelation> stationRelation;
-        private List<String> endStation;
-        private List<String> startStation;
+        private List<StationTuple> stationTuples;
         private Order order;
 
         public TrackPage(Window window) : base(window)
         {
             InitializeComponent();
 
+            stationTuples = new List<StationTuple>();
+            stationTuples.Add(new StationTuple("Warszawa", "Warszawy"));
+            stationTuples.Add(new StationTuple("Lublin", "Lublina"));
+            stationTuples.Add(new StationTuple("Gdynia", "Gdyni"));
+            stationTuples.Add(new StationTuple("Sopot", "Sopotu"));
+
             stationRelation = new List<StationRelation>();
-            stationRelation.Add(new StationRelation("Warszawa", "Warszawy", "Lublin", "Lublina"));
-            stationRelation.Add(new StationRelation("Katowice", "Katowic", "Lublin", "Lublina"));
-            stationRelation.Add(new StationRelation("Warszawa", "Warszawy", "Katowice", "Katowic"));
-            stationRelation.Add(new StationRelation("Gdynia", "Gdyni", "Lublin", "Lublina"));
-            stationRelation.Add(new StationRelation("Lublin", "Lublina", "Sopot", "Sopotu"));
+
+            for (int i=0; i<stationTuples.Count; i++)
+            {
+                for (int j = 0; j < stationTuples.Count; j++)
+                {
+                    if (i != j)
+                    {
+                        stationRelation.Add(new StationRelation(stationTuples[i], stationTuples[j]));
+                    }    
+                }
+            }
 
             lvStations.ItemsSource = stationRelation;
-
-            /*startStation = new List<String>();
-            startStation.Add("Warszawa");
-            startStation.Add("Katowice");
-            startStation.Add("Gdynia");
-            startStation.Add("Lublin");
-
-            endStation = new List<String>();
-            endStation.Add("Lublina");
-            endStation.Add("Katowic");
-            endStation.Add("Sopotu");*/
         }
 
         public override void InitializeSpeech(object sender, DoWorkEventArgs e)
@@ -72,7 +72,7 @@ namespace dialogowe_pkp
 
             RecognitionResult result = e.Result;
 
-            if (result.Confidence < 0.6)
+            if (result.Confidence < 0.55)
             {
                 SpeakRepeat();
             }
@@ -102,7 +102,7 @@ namespace dialogowe_pkp
 
                             break;
                         case "incompleteorders":
-                            EndStationChooded(endStation[int.Parse(command.Skip(1).First())]);
+                            EndStationChooded(stationTuples[int.Parse(command.Skip(1).First())].Name);
                             itemNameStationEnd.Text = "Stacja końcowa to: " + order.To;
                             SpeakQuestion();
                             break;
@@ -110,10 +110,9 @@ namespace dialogowe_pkp
                             ChangePage(new HoursPage(window, order));
                             break;
                         case "startstations":
-                            Console.WriteLine("asd");
                             if (order != null)
                             {
-                                order.From = startStation[int.Parse(command.Skip(1).First())];
+                                order.From = stationTuples[int.Parse(command.Skip(1).First())].Name;
                                 itemNameStationStart.Text = "Stacja początkowa to: " + order.From;
                                 SpeakConfirmation();
                             }
@@ -149,13 +148,13 @@ namespace dialogowe_pkp
         protected override void AddCustomSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
             AddCompleteOrderSpeechGrammarRules(srgsRules);
-            //AddInCompleteOrderSpeechGrammarRules(srgsRules);
             AddCompleteExtendedOrderSpeechGrammarRules(srgsRules);
-            //AddStartStationSpeechGrammarRules(srgsRules);
+            AddInCompleteOrderSpeechGrammarRules(srgsRules);
+            AddStartStationSpeechGrammarRules(srgsRules);
             AddConfirmationSpeechGrammarRules(srgsRules);
         }
 
-        /*private void AddStartStationSpeechGrammarRules(SrgsRulesCollection srgsRules)
+        private void AddStartStationSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
             SrgsRule movieSrgsRule;
 
@@ -163,9 +162,9 @@ namespace dialogowe_pkp
                 SrgsOneOf startStationSrgsOneOf = new SrgsOneOf();
 
                 int i = 0;
-                foreach (String station in startStation)
+                foreach (StationTuple tuple in stationTuples)
                 {
-                    SrgsItem srgsItem = new SrgsItem(station);
+                    SrgsItem srgsItem = new SrgsItem(tuple.Name);
                     srgsItem.Add(new SrgsSemanticInterpretationTag("out=\"startstations." + i++ + "\";"));
 
                     startStationSrgsOneOf.Add(srgsItem);
@@ -192,7 +191,7 @@ namespace dialogowe_pkp
                 SrgsOneOf srgsOneOf = (SrgsOneOf)rootSrgsRule.Elements.Where(element => element is SrgsOneOf).First();
                 srgsOneOf.Add(srgsItem);
             }
-        }*/
+        }
 
         private void AddCompleteExtendedOrderSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
@@ -212,8 +211,8 @@ namespace dialogowe_pkp
 
                 SrgsItem pleaseSrgsItem = new SrgsItem();
                 SrgsOneOf pleaseSrgsOneOf = new SrgsOneOf();
-                pleaseSrgsOneOf.Add(new SrgsItem("Chcę kupić"));
-                pleaseSrgsOneOf.Add(new SrgsItem("Chciałbym kupić"));
+                pleaseSrgsOneOf.Add(new SrgsItem("Proszę"));
+                pleaseSrgsOneOf.Add(new SrgsItem("Poproszę"));
                 pleaseSrgsItem.Add(pleaseSrgsOneOf);
 
                 SrgsItem phraseSrgsItem = new SrgsItem();
@@ -224,7 +223,7 @@ namespace dialogowe_pkp
                 ticketSrgsOneOf.Add(new SrgsItem("bilet"));
                 ticketSrgsOneOf.Add(new SrgsItem("bilety"));
                 ticketSrgsItem.Add(ticketSrgsOneOf);
-                ticketSrgsItem.Add(new SrgsItem(0, 1, "Na pociąg"));
+                ticketSrgsItem.Add(new SrgsItem("na pociąg"));
 
 
                 SrgsItem phraseSrgsItem2 = new SrgsItem();
@@ -299,7 +298,7 @@ namespace dialogowe_pkp
             }
         }
 
-        /*private void AddInCompleteOrderSpeechGrammarRules(SrgsRulesCollection srgsRules)
+        private void AddInCompleteOrderSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
             SrgsRule movieSrgsRule;
 
@@ -307,9 +306,9 @@ namespace dialogowe_pkp
                 SrgsOneOf startStationSrgsOneOf = new SrgsOneOf();
 
                 int i = 0;
-                foreach (String station in endStation)
+                foreach (StationTuple tuple in stationTuples)
                 {
-                    SrgsItem srgsItem = new SrgsItem(station);
+                    SrgsItem srgsItem = new SrgsItem(tuple.Variant);
                     srgsItem.Add(new SrgsSemanticInterpretationTag("out=\"incompleteorders." + i++ + "\";"));
 
                     startStationSrgsOneOf.Add(srgsItem);
@@ -351,7 +350,7 @@ namespace dialogowe_pkp
                 SrgsOneOf srgsOneOf = (SrgsOneOf)rootSrgsRule.Elements.Where(element => element is SrgsOneOf).First();
                 srgsOneOf.Add(srgsItem);
             }
-        }*/
+        }
 
         private void AddConfirmationSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {

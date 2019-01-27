@@ -16,11 +16,13 @@ namespace dialogowe_pkp
             ToB = toB;
         }
 
+        public StationRelation(StationTuple stationTupleA, StationTuple stationTupleB) : this(stationTupleA.Name, stationTupleA.Variant, stationTupleB.Name, stationTupleB.Variant)
+        {
+        }
         public String FromA { get; set; }
         public String ToA { get; set; }
 
         public String FromB { get; set; }
         public String ToB { get; set; }
-
     }
 }
