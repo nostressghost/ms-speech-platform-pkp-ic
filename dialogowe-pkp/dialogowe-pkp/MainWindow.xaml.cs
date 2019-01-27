@@ -21,7 +21,14 @@ namespace dialogowe_pkp
         {
             InitializeComponent();
 
-            Content = new WelcomePage(this);
+            DbConnector connector = new DbConnector();
+            DispatchSync(connector.retrieve);
+
+            Content = new WelcomePage(this, connector);
+        }
+        protected void DispatchSync(Action action)
+        {
+            Dispatcher.Invoke(action);
         }
     }
 }

@@ -20,30 +20,24 @@ namespace dialogowe_pkp
 {
     public partial class HoursPage : SpeechHandler
     {
+        private DbConnector Connector;
         private List<Hour> hours;
         private Order Order;
 
-        public HoursPage(Window window, Order order) : base(window)
+        public HoursPage(Window window, Order order, DbConnector connector) : base(window)
         {
             InitializeComponent();
 
             Order = order;
+            Connector = connector;
 
-            hours = new List<Hour>();
-
-            hours.Add(new Hour("10:00"));
-            hours.Add(new Hour("11:00"));
-            hours.Add(new Hour("12:00"));
-            hours.Add(new Hour("12:30"));
-            hours.Add(new Hour("14:00"));
-
+            hours = connector.getHours();
             lbHourList.ItemsSource = hours;
         }
 
         public override void InitializeSpeech(object sender, DoWorkEventArgs e)
         {
             base.InitializeSpeech(sender, e);
-
             SpeakHello();
         }
 

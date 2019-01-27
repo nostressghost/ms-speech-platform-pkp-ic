@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dialogowe_pkp
 {
-    class StationRelation
+    public class StationRelation
     {
         public StationRelation(String fromA, String fromB, String toA, String toB)
         {

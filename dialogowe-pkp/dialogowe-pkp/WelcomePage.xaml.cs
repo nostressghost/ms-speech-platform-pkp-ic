@@ -19,9 +19,12 @@ namespace dialogowe_pkp
 {
     public partial class WelcomePage : SpeechHandler
     {
-        public WelcomePage(Window window) : base(window)
+        private DbConnector Connector;
+
+        public WelcomePage(Window window, DbConnector connector) : base(window)
         {
             InitializeComponent();
+            Connector = connector;
         }
 
         public override void InitializeSpeech(object sender, DoWorkEventArgs e)
@@ -36,6 +39,8 @@ namespace dialogowe_pkp
             base.SpeechRecognitionEngine_SpeechRecognized(sender, e);
 
             RecognitionResult result = e.Result;
+
+            Console.WriteLine(GetType().Name + "[" + result.Semantics.Value + "] " + result.Text + " (" + result.Confidence + ")");
 
             if (result.Confidence < 0.6)
             {
@@ -61,7 +66,7 @@ namespace dialogowe_pkp
 
         private void MoveToOrderPage()
         {
-            this.ChangePage(new TrackPage(this.window));
+            this.ChangePage(new TrackPage(this.window, Connector));
         }
     
         private void SpeakRepeat()

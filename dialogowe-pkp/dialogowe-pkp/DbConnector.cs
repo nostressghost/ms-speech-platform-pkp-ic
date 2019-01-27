@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace dialogowe_pkp
 {
-    class DbConnector {
+    public class DbConnector {
         private DataSet ds = new DataSet();
         private DataTable dt = new DataTable();
 
+        private List<StationRelation> stationRelationList;
         private List<StationTuple> stationTupleList;
         private List<SeatsQuantity> seatsQuantityList;
         private List<Hour> hourList;
@@ -28,12 +29,17 @@ namespace dialogowe_pkp
             return stationTupleList;
         }
 
+        public List<StationRelation> GetStationRelations()
+        {
+            return stationRelationList;
+        }
+
         public List<SeatsQuantity> GetSeatsQuantities()
         {
             return seatsQuantityList;
         }
 
-            public List<Hour> getHours()
+        public List<Hour> getHours()
         {
             return hourList;
         }
@@ -48,6 +54,7 @@ namespace dialogowe_pkp
 
             stationTupleList = new List<StationTuple>();
             seatsQuantityList = new List<SeatsQuantity>();
+            stationRelationList = new List<StationRelation>();
             hourList = new List<Hour>();
         }
 
@@ -93,7 +100,8 @@ namespace dialogowe_pkp
                 if (conn != null) conn.Close();
             }
         }
-        /*public void retrieve()
+
+        public void retrieve()
         {
             try
             {
@@ -103,7 +111,7 @@ namespace dialogowe_pkp
                 NpgsqlConnection conn = new NpgsqlConnection(connstring);
                 conn.Open();
                 // quite complex sql statement
-                string sql = "SELECT * FROM public.Movies";
+                string sql = "SELECT * FROM public.Stations";
                 // data adapter making request from our connection
                 NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, conn);
                 // i always reset DataSet before i do
@@ -114,10 +122,9 @@ namespace dialogowe_pkp
                 // since it C# DataSet can handle multiple tables, we will select first
                 dt = ds.Tables[0];
 
-
                 for (int j = 0; j < dt.Rows.Count; j++)
                 {
-                    moviesList.Add(new Movie { Title = dt.Rows[j].ItemArray[1].ToString() });
+                    stationTupleList.Add(new StationTuple(dt.Rows[j].ItemArray[0].ToString(), dt.Rows[j].ItemArray[1].ToString()));
                 }
 
                 sql = "SELECT * FROM public.Hours";
@@ -132,13 +139,39 @@ namespace dialogowe_pkp
 
                 for (int j = 0; j < dt.Rows.Count; j++)
                 {
-                    hourList.Add(new Hour { Value = dt.Rows[j].ItemArray[1].ToString() });
+                    hourList.Add(new Hour(dt.Rows[j].ItemArray[0].ToString()));
+                }
+
+                sql = "SELECT * FROM public.Seats";
+                da = new NpgsqlDataAdapter(sql, conn);
+                // i always reset DataSet before i do
+                // something with it.... i don't know why :-)
+                ds.Reset();
+                // filling DataSet with result from NpgsqlDataAdapter
+                da.Fill(ds);
+                // since it C# DataSet can handle multiple tables, we will select first
+                dt = ds.Tables[0];
+
+                for (int j = 0; j < dt.Rows.Count; j++)
+                {
+                    seatsQuantityList.Add(new SeatsQuantity(Convert.ToInt32(dt.Rows[j].ItemArray[0])));
                 }
 
                 // connect grid to DataTable
                 //dataGridView1.DataSource = dt;dt.Rows[j].ItemArray[1]
                 // since we only showing the result we don't need connection anymore
                 conn.Close();
+
+                for (int i = 0; i < stationTupleList.Count; i++)
+                {
+                    for (int j = 0; j < stationTupleList.Count; j++)
+                    {
+                        if (i != j)
+                        {
+                            stationRelationList.Add(new StationRelation(stationTupleList[i], stationTupleList[j]));
+                        }
+                    }
+                }
             }
             catch (Exception msg)
             {
@@ -146,6 +179,7 @@ namespace dialogowe_pkp
                 //MessageBox.Show(msg.ToString());
                 throw;
             }
-        }*/
+        }  
+        
     }
 }

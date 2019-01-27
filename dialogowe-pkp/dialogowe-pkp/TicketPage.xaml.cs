@@ -51,6 +51,8 @@ namespace dialogowe_pkp
 
             RecognitionResult result = e.Result;
 
+            Console.WriteLine(GetType().Name + "[" + result.Semantics.Value + "] " + result.Text + " (" + result.Confidence + ")");
+
             if (result.Confidence < 0.6)
             {
                 SpeakRepeat();
@@ -66,7 +68,6 @@ namespace dialogowe_pkp
                         break;
                     case "ticket":
                         seatsChoosed(seats[int.Parse(command.Skip(1).First())]);
-                        //DispatchAsync(MoveToOrderPage);
                         break;
                     case "quit":
                         CloseWindow();
@@ -103,8 +104,6 @@ namespace dialogowe_pkp
 
         private void AddTicketsSpeechGrammarRules(SrgsRulesCollection srgsRules)
         {
-            if ((seats != null) && (seats.Count > 0))
-            {
                 SrgsRule movieSrgsRule;
 
                 {
@@ -151,13 +150,19 @@ namespace dialogowe_pkp
                     SrgsOneOf srgsOneOf = (SrgsOneOf)rootSrgsRule.Elements.Where(element => element is SrgsOneOf).First();
                     srgsOneOf.Add(srgsItem);
                 }
-            }
         }
 
         private void seatsChoosed(SeatsQuantity seatsQuantity)
         {
             Order.Quantity = seatsQuantity.Quantity;
-            //DispatchAsync(System.Windows.Application.Current.Shutdown);
+            Speak("Wybrałeś " + Order.Quantity + " miejsca");
+            DispatchAsync(asd);
+            
+        }
+
+        private void asd()
+        {
+            this.ChangePage(new SummaryPage(this.window, Order));
         }
 
         private void SeatsListSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -165,7 +170,6 @@ namespace dialogowe_pkp
             if (lbSeatsList.SelectedItem != null)
             {
                 seatsChoosed(lbSeatsList.SelectedItem as SeatsQuantity);
-                ChangePage(new SummaryPage(this.window, Order));
             }
         }
 

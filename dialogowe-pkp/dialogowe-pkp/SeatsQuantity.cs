@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dialogowe_pkp
 {
-    class SeatsQuantity
+    public class SeatsQuantity
     {
         public int Quantity { get; set; }
 

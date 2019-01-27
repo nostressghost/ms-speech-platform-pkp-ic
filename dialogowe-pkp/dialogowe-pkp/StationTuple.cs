@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dialogowe_pkp
 {
-    class StationTuple
+    public class StationTuple
     {
         public StationTuple(String name, String variant)
         {

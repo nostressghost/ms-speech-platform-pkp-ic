@@ -47,6 +47,8 @@ namespace dialogowe_pkp
 
             RecognitionResult result = e.Result;
 
+            Console.WriteLine(GetType().Name + "[" + result.Semantics.Value + "] " + result.Text + " (" + result.Confidence + ")");
+
             if (result.Confidence < 0.6)
             {
                 SpeakRepeat();
@@ -76,6 +78,7 @@ namespace dialogowe_pkp
         private void SpeakTYP()
         {
             Speak("Dziękuję za złożenie zamówienia");
+            DispatchAsync(System.Windows.Application.Current.Shutdown);
         }
 
         private void SpeakQuit()

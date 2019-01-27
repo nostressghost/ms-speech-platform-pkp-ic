@@ -23,31 +23,17 @@ namespace dialogowe_pkp
         private List<StationRelation> stationRelation;
         private List<StationTuple> stationTuples;
         private Order order;
+        private DbConnector Connector;
 
-        public TrackPage(Window window) : base(window)
+        public TrackPage(Window window, DbConnector connector) : base(window)
         {
             InitializeComponent();
 
-            stationTuples = new List<StationTuple>();
-            stationTuples.Add(new StationTuple("Warszawa", "Warszawy"));
-            stationTuples.Add(new StationTuple("Lublin", "Lublina"));
-            stationTuples.Add(new StationTuple("Gdynia", "Gdyni"));
-            stationTuples.Add(new StationTuple("Sopot", "Sopotu"));
+            Connector = connector;
 
-            stationRelation = new List<StationRelation>();
-
-            for (int i=0; i<stationTuples.Count; i++)
-            {
-                for (int j = 0; j < stationTuples.Count; j++)
-                {
-                    if (i != j)
-                    {
-                        stationRelation.Add(new StationRelation(stationTuples[i], stationTuples[j]));
-                    }    
-                }
-            }
-
-            lvStations.ItemsSource = stationRelation;
+            stationTuples = connector.getStationTuples();
+            stationRelation = connector.GetStationRelations();
+            lvStations.ItemsSource = connector.GetStationRelations();
         }
 
         public override void InitializeSpeech(object sender, DoWorkEventArgs e)
@@ -62,7 +48,7 @@ namespace dialogowe_pkp
             if (lvStations.SelectedItem != null)
             {
                 TrackChoosed(lvStations.SelectedItem as StationRelation);
-                ChangePage(new HoursPage(this.window, this.order));
+                ChangePage(new HoursPage(this.window, this.order, Connector));
             }
         }
 
@@ -71,6 +57,8 @@ namespace dialogowe_pkp
             base.SpeechRecognitionEngine_SpeechRecognized(sender, e);
 
             RecognitionResult result = e.Result;
+
+            Console.WriteLine(GetType().Name + "[" + result.Semantics.Value + "] " + result.Text + " (" + result.Confidence + ")");
 
             if (result.Confidence < 0.55)
             {
@@ -107,7 +95,7 @@ namespace dialogowe_pkp
                             SpeakQuestion();
                             break;
                         case "confirmations":
-                            ChangePage(new HoursPage(window, order));
+                            ChangePage(new HoursPage(window, order, Connector));
                             break;
                         case "startstations":
                             if (order != null)
