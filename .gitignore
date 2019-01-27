@@ -1,4 +1,5 @@
 bin
 obj
 dialogowe-pkp/.vs
+dialogowe-pkp/Npgsql2.0.1-bin
 *.sln

@@ -20,6 +20,7 @@ namespace dialogowe_pkp
     public partial class SummaryPage : SpeechHandler
     {
         private Order Order;
+        private DbConnector connector;
 
         public SummaryPage(Window window, Order order) : base(window)
         {
@@ -30,6 +31,8 @@ namespace dialogowe_pkp
             itemNameStationEnd.Text = "Stacja końcowa: " + order.To;
             itemNameHours.Text = "Godzina odjazdu: " + order.Hour;
             itemNameStationSeats.Text = "Liczba miejsc: " + order.Quantity;
+
+            connector = new DbConnector();
         }
 
         public override void InitializeSpeech(object sender, DoWorkEventArgs e)
@@ -54,6 +57,7 @@ namespace dialogowe_pkp
                 switch (command)
                 {
                     case "last":
+                        connector.saveOrderToDatabase(Order);
                         SpeakTYP();
                         break;
 
@@ -92,7 +96,7 @@ namespace dialogowe_pkp
             Speak("Stacja końcowa to: " + Order.To);
             Speak("Godzina odjazdu to: " + Order.Hour);
             Speak("Liczba zarezerwowanych miejsc to: " + Order.Quantity);
-            Speak("Jeżeli rezerwacja jest poprawna powiedz POTWIERDZAM, w innym przypadku powiedz ANULUJ");
+            Speak("Jeżeli rezerwacja jest poprawna powiedz POTWIERDZAM REZERWACJĘ, w innym przypadku powiedz ANULUJ");
         }
     }
 }

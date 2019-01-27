@@ -59,6 +59,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Microsoft SDKs\Speech\v11.0\Assembly\Microsoft.Speech.dll</HintPath>
     </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\Npgsql2.0.1-bin\bin\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -79,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DbConnector.cs" />
     <Compile Include="Hour.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="PageHandler.cs" />
