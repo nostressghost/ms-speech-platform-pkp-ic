@@ -58,8 +58,6 @@ namespace dialogowe_pkp
 
             RecognitionResult result = e.Result;
 
-            Console.WriteLine(GetType().Name + "[" + result.Semantics.Value + "] " + result.Text + " (" + result.Confidence + ")");
-
             if (result.Confidence < 0.55)
             {
                 SpeakRepeat();
